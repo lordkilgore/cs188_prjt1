@@ -132,16 +132,16 @@ def uniformCostSearch(problem: SearchProblem):
     fringe = util.PriorityQueue()
     fringe.push((problem.getStartState(), [], 0), 0)
     while not fringe.isEmpty():
-        current_cost, state, nodes = fringe.pop()
+        state, partial_plan, cost = fringe.pop()
         if problem.isGoalState(state): 
-            return nodes
-        if state not in closed or current_cost < closed[state]:
-            closed.add(current_cost)
-            
+            return partial_plan
+        
+        if state not in closed:
+            closed.add(state)
             for successor, node, node_cost in problem.getSuccessors(state):
                 if successor not in closed:
-                    cumulative_cost = current_cost + node_cost
-                    fringe.push((successor, nodes + [node], cumulative_cost), cumulative_cost)
+                    cumulative_cost = cost + node_cost
+                    fringe.push((successor, partial_plan + [node], cumulative_cost), cumulative_cost)
     return []
     #python3 autograder.py -q q3
 
