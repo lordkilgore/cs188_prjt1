@@ -388,8 +388,6 @@ def cornersHeuristic(state: Any, problem: CornersProblem):
         return 0
     else:
         return max(a)
-    
-    # heuristic s.t 0 <= h(n+1) <= h(n) + 1
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
