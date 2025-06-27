@@ -87,17 +87,63 @@ def depthFirstSearch(problem: SearchProblem):
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    #util.raiseNotDefined()
+    closed = set()
+    fringe = util.Stack()
+    fringe.push((problem.getStartState(), []))
+    while not fringe.isEmpty():
+        state, nodes = fringe.pop()
+        if problem.isGoalState(state): 
+            return nodes
+        if state not in closed:
+            closed.add(state)
+            
+            for successor, node, _ in problem.getSuccessors(state):
+                if successor not in closed:
+                    fringe.push((successor, nodes + [node]))
+
+    return [] 
 
 def breadthFirstSearch(problem: SearchProblem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    #util.raiseNotDefined()
+    closed = set()
+    fringe = util.Queue()
+    fringe.push((problem.getStartState(), []))
+    while not fringe.isEmpty():
+        state, nodes = fringe.pop()
+        if problem.isGoalState(state): 
+            return nodes
+        if state not in closed:
+            closed.add(state)
+            
+            for successor, node, _ in problem.getSuccessors(state):
+                if successor not in closed:
+                    fringe.push((successor, nodes + [node]))
+
+    return [] 
 
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    #util.raiseNotDefined()
+    closed = set()
+    fringe = util.PriorityQueue()
+    fringe.push((problem.getStartState(), [], 0), 0)
+    while not fringe.isEmpty():
+        current_cost, state, nodes = fringe.pop()
+        if problem.isGoalState(state): 
+            return nodes
+        if state not in closed or current_cost < closed[state]:
+            closed.add(current_cost)
+            
+            for successor, node, node_cost in problem.getSuccessors(state):
+                if successor not in closed:
+                    cumulative_cost = current_cost + node_cost
+                    fringe.push((successor, nodes + [node], cumulative_cost), cumulative_cost)
+    return []
+    #python3 autograder.py -q q3
 
 def nullHeuristic(state, problem=None):
     """
