@@ -481,7 +481,48 @@ def foodHeuristic(state: Tuple[Tuple, List[List]], problem: FoodSearchProblem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    def probe(u, v):
+        x, y = u
+        walls1 = 0
+        walls2 = 0
+
+        while x < v[0]:
+            while y < v[1]:
+                if problem.walls[x][y]:
+                    walls1 += 1
+                y += 1
+            x += 1
+        
+        while y < v[1]:
+            while x < v[0]:
+                if problem.walls[x][y]:
+                    walls2 += 1
+                x += 1
+            y += 1
+
+        return max(walls1, walls2)
+
+    if len(foodGrid.asList()) != 0:
+        """mhd = lambda x: abs(position[0] - x[0]) + abs(position[1] - x[1])
+
+        furthest = max([foodLoc for foodLoc in foodGrid.asList()], key=mhd)
+        nearest = min([foodLoc for foodLoc in foodGrid.asList()], key=mhd)
+
+        h1 = len(search.breadthFirstSearch(position, furthest))
+        h2 = len(search.breadthFirstSearch(nearest, furthest))
+        h3 = len
+        h4 = """
+        
+        distFromNearest = 0
+        for foodLocation in foodGrid.asList():
+            distTo = mazeDistance(position, foodLocation, problem.startingGameState)
+            distFromNearest = max(distFromNearest, distTo)
+
+        h = distFromNearest
+    else:
+        return 0 
+
+    return h
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
@@ -512,7 +553,7 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -548,7 +589,7 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.food[x][y]
 
 def mazeDistance(point1: Tuple[int, int], point2: Tuple[int, int], gameState: pacman.GameState) -> int:
     """
